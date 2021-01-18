@@ -71,6 +71,18 @@ const routes: Array<RouteConfig> = [
         name: 'user',
         // webpackChunkName: 'home' 给路由模块起一个别名
         component: () => import(/* webpackChunkName: 'course' */ '@/views/user/index.vue')
+      },
+      {
+        path: '/menu/create',
+        name: 'menu-create',
+        // webpackChunkName: 'home' 给路由模块起一个别名
+        component: () => import(/* webpackChunkName: 'menu-create-edit' */ '@/views/menu/create.vue')
+      },
+      {
+        path: '/menu/:id/edit',
+        name: 'menu-edit',
+        // webpackChunkName: 'home' 给路由模块起一个别名
+        component: () => import(/* webpackChunkName: 'menu-create-edit' */ '@/views/menu/edit.vue')
       }
     ]
   }
