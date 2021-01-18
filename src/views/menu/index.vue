@@ -4,39 +4,49 @@
       <div slot="header" class="clearfix">
         <el-button @click="$router.push({ name: 'menu-create'})">添加菜单</el-button>
       </div>
-      <el-table
-        :data="menus"
-        style="width: 100%">
-        <el-table-column
-          type="index"
-          label="编号"
-          width="60">
-        </el-table-column>
-        <el-table-column
-          prop="name"
-          label="菜单名称"
-          width="180">
-        </el-table-column>
-        <el-table-column
-          prop="level"
-          label="菜单级数">
-        </el-table-column>
-        <el-table-column
-          prop="icon"
-          label="前端图标">
-        </el-table-column>
-        <el-table-column
-          prop="orderNum"
-          label="排序">
-        </el-table-column>
-        <el-table-column
-          label="操作">
-          <template slot-scope="scope">
-            <el-button type="text" @click="handleEdit(scope.row)">编辑</el-button>
-            <el-button type="text" @click="handleDelete(scope.row)">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+      <div class="tableContainer">
+        <el-table
+          :data="menus"
+          height='calc( 100vh - 180px)'
+          border
+          style="width: 100%">
+          <el-table-column
+            type="index"
+            label="编号"
+            align="center"
+            width="60">
+          </el-table-column>
+          <el-table-column
+            prop="name"
+            label="菜单名称"
+            align="center"
+            width="180">
+          </el-table-column>
+          <el-table-column
+            prop="level"
+            align="center"
+            label="菜单级数">
+          </el-table-column>
+          <el-table-column
+            prop="icon"
+            align="center"
+            label="前端图标">
+          </el-table-column>
+          <el-table-column
+            prop="orderNum"
+            align="center"
+            label="排序">
+          </el-table-column>
+          <el-table-column
+            label="操作"
+            align="center">
+            <template slot-scope="scope">
+              <el-button type="text" @click="handleEdit(scope.row)">编辑</el-button>
+              <el-button type="text" @click="handleDelete(scope.row)">删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
     </el-card>
   </div>
 </template>
@@ -49,7 +59,12 @@ export default Vue.extend({
   name: 'MenuIndex',
   data () {
     return {
-      menus: [] // 菜单列表
+      menus: [], // 菜单列表
+      page: {
+        current: 1,
+        size: 10
+      },
+      totalCount: 0 // 所有条数
     }
   },
   created () {
@@ -90,5 +105,8 @@ export default Vue.extend({
 </script>
 
 <style lang='scss' scoped>
-
+.tableContainer{
+  // height: calc( 100vh - 200px);
+  // overflow: auto;
+}
 </style>
