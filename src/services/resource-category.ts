@@ -9,3 +9,18 @@ export const getResourceCategories = () => {
     url: '/boss/resource/category/getAll'
   })
 }
+
+export const saveOrderUpdate = (data: any) => {
+  return request({
+    method: 'post',
+    url: '/boss/resource/category/saveOrderUpdate',
+    data
+  })
+}
+
+export const delCategory = (id: string | number) => {
+  return request({
+    method: 'delete',
+    url: `boss/resource/category/${id}`
+  })
+}

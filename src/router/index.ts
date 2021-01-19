@@ -83,6 +83,19 @@ const routes: Array<RouteConfig> = [
         name: 'menu-edit',
         // webpackChunkName: 'home' 给路由模块起一个别名
         component: () => import(/* webpackChunkName: 'menu-create-edit' */ '@/views/menu/edit.vue')
+      },
+      {
+        path: '/role/:roleId/alloc-menu',
+        name: 'alloc-menu',
+        // webpackChunkName: 'home' 给路由模块起一个别名
+        component: () => import(/* webpackChunkName: 'alloc-menu' */ '@/views/role/alloc-menu.vue'),
+        props: true // 将路由路径参数映射到组件的 props 数据中
+      },
+      {
+        path: '/resource/category',
+        name: 'resource-category',
+        // webpackChunkName: 'home' 给路由模块起一个别名
+        component: () => import(/* webpackChunkName: 'resource-category' */ '@/views/resource/resource-category.vue')
       }
     ]
   }

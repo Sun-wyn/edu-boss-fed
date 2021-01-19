@@ -26,8 +26,10 @@
         </el-form>
       </div>
       <div class="btns">
-        <el-button size='small' @click="openAdd">添加</el-button>
-        <el-button size='small'>资源分类</el-button>
+        <el-button size='small' @click="showDialog">添加</el-button>
+        <el-button size='small' @click="$router.push({
+        name: 'resource-category'
+      })">资源分类</el-button>
       </div>
       <div class="tableContainer">
         <el-table
@@ -93,13 +95,25 @@
         </el-pagination>
       </div>
     </el-card>
-    <create-or-edit :visiable.sync='isShow'></create-or-edit>
+    <el-dialog
+      :title="isEdit ? '编辑资源':'添加资源'"
+      :visible.sync="dialogVisiable"
+      width="30%"
+      :before-close="handleClose">
+      <create-or-edit
+        v-if='dialogVisiable'
+        :id='resourceId'
+        :is-edit='isEdit'
+        @success='onSuccess'
+        @cancel='dialogVisiable=false'
+      ></create-or-edit>
+    </el-dialog>
   </div>
 </template>
 
 <script lang='ts'>
 import Vue from 'vue'
-import { getResourcePages } from '@/services/resource'
+import { getResourcePages, delResourceById } from '@/services/resource'
 import { getResourceCategories } from '@/services/resource-category'
 import { Form } from 'element-ui'
 import CreateOrEdit from './CreateOrEdit.vue'
@@ -122,7 +136,9 @@ export default Vue.extend({
       totalCount: 0,
       resourceCategories: [], // 资源分类列表
       isLoading: true, // 加载状态
-      isShow: false
+      isEdit: false,
+      dialogVisiable: false,
+      resourceId: ''
     }
   },
   created () {
@@ -130,9 +146,6 @@ export default Vue.extend({
     this.loadgResourceCategories()
   },
   methods: {
-    openAdd () {
-      this.isShow = true
-    },
     handleSizeChange (val: number) {
       this.form.size = val
       this.form.current = 1 // 每页大小改变更新查询第1页数据
@@ -159,10 +172,23 @@ export default Vue.extend({
       this.totalCount = data.data.total
     },
     handleEdit (row: any) {
-      console.log(row)
+      this.isEdit = true
+      this.resourceId = row.id
+      this.dialogVisiable = true
     },
     handleDelete (row: any) {
-      console.log(row)
+      this.$confirm('确认删除吗？', '删除提示', {})
+        .then(async () => { // 确认执行这里
+          // 请求删除操作
+          const { data } = await delResourceById(row.id)
+          if (data.code === '000000') {
+            this.$message.success('删除成功')
+            this.loadResources() // 更新数据列表
+          }
+        })
+        .catch(() => { // 取消删除
+          this.$message.info('已取消删除')
+        })
     },
     onRest () {
       (this.$refs.form as Form).resetFields()
@@ -174,6 +200,16 @@ export default Vue.extend({
       const arr = str.split('T')
       const time = arr[1].split('.')[0]
       return arr[0] + ' ' + time
+    },
+    handleClose () {
+      this.dialogVisiable = false
+    },
+    onSuccess () {
+      this.dialogVisiable = false
+    },
+    showDialog () {
+      this.dialogVisiable = true
+      this.isEdit = false
     }
   }
 })

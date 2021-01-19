@@ -10,3 +10,25 @@ export const getResourcePages = (data: any) => {
     data
   })
 }
+
+export const saveOrUpdate = (data: any) => {
+  return request({
+    method: 'post',
+    url: '/boss/resource/saveOrUpdate',
+    data
+  })
+}
+
+export const getResourceById = (id: string | number) => {
+  return request({
+    method: 'get',
+    url: `/boss/resource/${id}`
+  })
+}
+
+export const delResourceById = (id: string | number) => {
+  return request({
+    method: 'delete',
+    url: `/boss/resource/${id}`
+  })
+}
