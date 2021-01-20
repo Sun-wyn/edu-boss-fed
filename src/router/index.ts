@@ -96,6 +96,13 @@ const routes: Array<RouteConfig> = [
         name: 'resource-category',
         // webpackChunkName: 'home' 给路由模块起一个别名
         component: () => import(/* webpackChunkName: 'resource-category' */ '@/views/resource/resource-category.vue')
+      },
+      {
+        path: '/role/:roleId/alloc-resource',
+        name: 'alloc-resource',
+        // webpackChunkName: 'home' 给路由模块起一个别名
+        component: () => import(/* webpackChunkName: 'alloc-resource' */ '@/views/role/alloc-resource.vue'),
+        props: true // 将路由路径参数映射到组件的 props 数据中
       }
     ]
   }

@@ -21,7 +21,7 @@
        <el-table
           :data="roles"
           border
-          height='calc( 100vh - 294px)'
+          height='calc( 100vh - 314px)'
           v-loading='isLoading'
           style="width: 100%">
           <el-table-column
@@ -62,7 +62,12 @@
                     roleId:scope.row.id
                   }
                 })">分配菜单</el-button>
-                <el-button size="small" type="text" @click="handleDelete(scope.row)">分配资源</el-button>
+                <el-button size="small" type="text" @click="$router.push({
+                  name:'alloc-resource',
+                  params:{
+                    roleId:scope.row.id
+                  }
+                })">分配资源</el-button>
               </div>
               <div>
                 <el-button size="small" type="text" @click="handleEdit(scope.row)">编辑</el-button>

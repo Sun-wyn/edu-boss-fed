@@ -32,3 +32,25 @@ export const delRoleById = (id: string | number) => {
     url: `/boss/role/${id}`
   })
 }
+
+export const getAllRole = () => {
+  return request({
+    method: 'get',
+    url: '/boss/role/all'
+  })
+}
+
+export const allocateUserRoles = (data: any) => {
+  return request({
+    method: 'post',
+    url: '/boss/role/allocateUserRoles',
+    data
+  })
+}
+
+export const getUserRoles = (id: string | number) => {
+  return request({
+    method: 'get',
+    url: `/boss/role/user/${id}`
+  })
+}

@@ -1,11 +1,15 @@
 <template>
-  <div class="user">用户管理</div>
+  <div class="user">
+    <user-list></user-list>
+  </div>
 </template>
 
 <script lang='ts'>
 import Vue from 'vue'
+import UserList from './UserList.vue'
 
 export default Vue.extend({
+  components: { UserList },
   name: 'UserIndex'
 })
 </script>
