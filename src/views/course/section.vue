@@ -17,15 +17,19 @@
             <span>{{node.label}}</span>
             <span v-if="data.sectionName" class="actions">
               <el-button>编辑</el-button>
-              <el-button>添加课时</el-button>
+              <el-button type="primary">添加课时</el-button>
               <el-button>状态</el-button>
             </span>
             <span v-else class="actions">
               <el-button>编辑</el-button>
-              <el-button @click="$router.push({
+              <el-button type="primary" @click="$router.push({
                 name: 'course-video',
                 params: {
                   courseId
+                },
+                query: {
+                  sectionId: node.parent.id,
+                  lessonId: data.id
                 }
               })">上传视频</el-button>
               <el-button>状态</el-button>
@@ -34,14 +38,23 @@
         </el-tree>
       </div>
     </el-card>
+    <el-dialog
+      title="章节信息"
+      :visible.sync="dialogVisible"
+      width="50%"
+      :before-close="handleClose">
+      <section-add-or-edit/>
+    </el-dialog>
   </div>
 </template>
 
 <script lang='ts'>
 import Vue from 'vue'
 import { getSectionAndLesson, saveOrUpdateSection } from '@/services/course-section'
+import sectionAddOrEdit from './components/sectionAddOrEdit.vue'
 
 export default Vue.extend({
+  components: { sectionAddOrEdit },
   name: 'CourseSection',
   props: {
     courseId: {
@@ -51,6 +64,7 @@ export default Vue.extend({
   },
   data () {
     return {
+      dialogVisible: true,
       sections: [],
       defaultProps: {
         children: 'lessonDTOS',
@@ -64,6 +78,9 @@ export default Vue.extend({
     this.loadSections()
   },
   methods: {
+    handleClose () {
+      this.dialogVisible = false
+    },
     handleNodeClick (data: any) {
       console.log(data)
     },

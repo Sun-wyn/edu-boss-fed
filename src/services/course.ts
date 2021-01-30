@@ -32,3 +32,19 @@ export const getCourseById = (courseId: string | number) => {
     }
   })
 }
+
+export const getQueryCourses = (data: any) => {
+  return request({
+    method: 'post',
+    url: '/boss/course/getQueryCourses',
+    data
+  })
+}
+
+export const changeState = (data: any) => {
+  return request({
+    method: 'get',
+    url: '/boss/course/changeState',
+    params: data
+  })
+}
