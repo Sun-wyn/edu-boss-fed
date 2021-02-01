@@ -16,13 +16,13 @@
           <div class="inner" slot-scope="{node,data}">
             <span>{{node.label}}</span>
             <span v-if="data.sectionName" class="actions">
-              <el-button>编辑</el-button>
-              <el-button type="primary">添加课时</el-button>
-              <el-button>状态</el-button>
+              <el-button size="small" @click.stop="handleEdit(data)">编辑</el-button>
+              <el-button size="small" type="primary" @click.stop="handleAddLesson(node)">添加课时</el-button>
+              <el-button size="small">状态</el-button>
             </span>
             <span v-else class="actions">
-              <el-button>编辑</el-button>
-              <el-button type="primary" @click="$router.push({
+              <el-button size="small" @click="handleEditLesson(node, data)">编辑</el-button>
+              <el-button size="small" type="success" @click="$router.push({
                 name: 'course-video',
                 params: {
                   courseId
@@ -32,18 +32,28 @@
                   lessonId: data.id
                 }
               })">上传视频</el-button>
-              <el-button>状态</el-button>
+              <el-button size="small">状态</el-button>
             </span>
           </div>
         </el-tree>
       </div>
     </el-card>
     <el-dialog
+      v-if="dialogVisible"
       title="章节信息"
       :visible.sync="dialogVisible"
       width="50%"
       :before-close="handleClose">
-      <section-add-or-edit/>
+      <section-add-or-edit
+        :is-edit='isEdit'
+        :is-section='isSection'
+        :courseId="courseId"
+        :courseName="$route.query.courseName"
+        :sectionName='sectionName'
+        :listCon='listCon'
+        @success='onSuccess'
+        @cancel='onCancel'
+      />
     </el-dialog>
   </div>
 </template>
@@ -60,29 +70,64 @@ export default Vue.extend({
     courseId: {
       type: [String, Number],
       required: true
+    },
+    courseName: {
+      type: String
     }
   },
   data () {
     return {
-      dialogVisible: true,
+      dialogVisible: false,
       sections: [],
       defaultProps: {
         children: 'lessonDTOS',
         label (data: any) {
           return data.sectionName || data.theme
         }
-      }
+      },
+      isEdit: false,
+      listCon: {},
+      isSection: true,
+      sectionName: ''
     }
   },
   created () {
     this.loadSections()
   },
   methods: {
+    handleEdit (data: any) {
+      this.isSection = true
+      this.isEdit = true
+      this.listCon = data
+      this.dialogVisible = true
+    },
+    handleEditLesson (node: any, data: any) {
+      console.log(node)
+      this.sectionName = node.parent.data.sectionName
+      console.log(this.sectionName)
+      this.isSection = false
+      this.isEdit = true
+      this.listCon = data
+      this.dialogVisible = true
+    },
+    handleAddLesson (node: any) {
+      this.isSection = false
+      this.dialogVisible = true
+      this.sectionName = node.label
+    },
+    onSuccess () {
+      this.dialogVisible = false
+      this.loadSections()
+    },
+    onCancel () {
+      this.dialogVisible = false
+      this.isEdit = true
+    },
     handleClose () {
       this.dialogVisible = false
     },
     handleNodeClick (data: any) {
-      console.log(data)
+      // console.log(data)
     },
     async loadSections () {
       const { data } = await getSectionAndLesson(this.courseId)

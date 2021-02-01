@@ -29,7 +29,6 @@
       </div>
        <el-table
           :data="courseList"
-          height='calc( 100vh - 280px)'
           border
           style="width: 100%">
           <el-table-column
@@ -85,6 +84,9 @@
                 name: 'course-section',
                 params: {
                   courseId: scope.row.id
+                },
+                query: {
+                  courseName: scope.row.courseName
                 }
               })">内容管理</el-button>
             </template>

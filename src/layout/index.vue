@@ -30,6 +30,7 @@ export default Vue.extend({
 .el-container {
   min-height: 100vh;
   min-width: 980px;
+  position: relative;
 }
 
 .el-aside {
@@ -38,10 +39,18 @@ export default Vue.extend({
 
 .el-header {
   background: #fff;
+  position: absolute;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 100;
 }
 
 .el-main {
+  margin-top: 60px;
   background: #eaeef2;
+  height: calc(100vh - 60px);
+  overflow: auto;
 }
 
 </style>

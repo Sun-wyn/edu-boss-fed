@@ -35,7 +35,6 @@
         <el-table
           :data="resources"
           border
-          height='calc( 100vh - 294px)'
           v-loading='isLoading'
           style="width: 100%">
           <el-table-column
